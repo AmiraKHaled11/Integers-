@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2 Negative Numbers · Practice</title>
+<style>
+  :root{
+    --ink:#1B2A41; --soft:#5A6B84; --hair:#D7E0EA;
+    --baby:#A7D8F0; --sky:#2E9BD6; --skyw:#E4F2FB;
+    --mint:#17A583; --mintw:#E3F5F0;
+    --lilac:#7B6BD9; --lilacw:#EFEBFB;
+    --amber:#E39A22; --coral:#E8515F; --coralw:#FCEAEC;
+    --green:#15803D; --greenw:#E7F4EA;
+    --paper:#FFFFFF;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:"Segoe UI",Calibri,system-ui,sans-serif; color:var(--ink);
+    background:
+      radial-gradient(900px 620px at 8% -6%, #E4F2FB 0%, rgba(228,242,251,0) 62%),
+      radial-gradient(820px 560px at 96% 104%, #EFEBFB 0%, rgba(239,235,251,0) 62%),
+      #FBFDFF;
+    background-attachment:fixed;
+    -webkit-text-size-adjust:100%;
+  }
+  header{max-width:1120px;margin:0 auto;padding:34px 20px 8px}
+  .rule{display:flex;gap:3px;margin-bottom:16px}
+  .rule i{height:6px;flex:1;border-radius:3px}
+  h1{margin:0;font-size:2.15rem;letter-spacing:-.01em}
+  h1 mark{background:linear-gradient(transparent 58%, var(--baby) 58%);color:inherit;padding:0 .12em}
+  .sub{margin:10px 0 0;color:var(--soft);font-size:1.02rem}
+
+  .bar{
+    position:sticky; top:0; z-index:20; margin-top:20px;
+    background:rgba(255,255,255,.93); backdrop-filter:blur(8px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair);
+  }
+  .bar .inner{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .score{font-weight:700;font-size:1.05rem}
+  .score b{font-size:1.5rem}
+  .track{flex:1;min-width:180px;height:10px;border-radius:5px;background:#E9EFF6;overflow:hidden}
+  .fill{height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,var(--sky),var(--mint));transition:width .35s ease}
+  .streak{color:var(--amber);font-weight:700}
+  button{font:inherit;cursor:pointer;border-radius:999px;border:1.5px solid var(--hair);background:#fff;color:var(--ink);padding:8px 16px;font-weight:600}
+  button:hover{border-color:var(--sky)}
+  button:focus-visible{outline:3px solid var(--baby);outline-offset:2px}
+  .ghost{border-color:var(--lilac);color:var(--lilac)}
+
+  main{max-width:1120px;margin:0 auto;padding:26px 20px 90px}
+  .sec{margin:34px 0 16px;display:flex;align-items:center;gap:12px}
+  .tag{color:#fff;font-weight:700;font-size:.82rem;letter-spacing:.04em;padding:6px 14px;border-radius:999px}
+  .sec h2{margin:0;font-size:1.25rem;font-weight:700}
+  .sec p{margin:0;color:var(--soft);font-size:.95rem}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  .q{background:var(--paper);border:1.5px solid var(--hair);border-radius:18px;padding:16px 18px 14px;
+     box-shadow:0 3px 14px rgba(159,178,200,.14); position:relative; transition:border-color .2s, box-shadow .2s}
+  .q .n{position:absolute;top:14px;left:16px;width:30px;height:30px;border-radius:50%;
+        display:grid;place-items:center;color:#fff;font-weight:700;font-size:.85rem}
+  .q .expr{font-family:Cambria,Georgia,serif;font-size:1.85rem;font-weight:700;margin:6px 0 14px;padding-left:42px;min-height:2.1rem}
+  .row{display:flex;gap:8px;align-items:center}
+  input[type=text]{
+    font:inherit;font-family:Cambria,Georgia,serif;font-size:1.3rem;font-weight:700;
+    width:100%;padding:9px 12px;border:1.5px solid var(--hair);border-radius:12px;background:#FBFDFF;color:var(--ink)}
+  input[type=text]:focus{outline:none;border-color:var(--sky);background:#fff}
+  .q.ok{border-color:var(--green);box-shadow:0 3px 14px rgba(21,128,61,.16)}
+  .q.ok input{background:var(--greenw);border-color:var(--green);color:var(--green)}
+  .q.no input{background:var(--coralw);border-color:var(--coral)}
+  .fb{margin:10px 0 0;font-size:.94rem;font-weight:600;min-height:1.2rem}
+  .fb.ok{color:var(--green)} .fb.no{color:var(--coral)}
+  .hint{margin-top:12px;border-top:1px dashed var(--hair);padding-top:12px;display:none}
+  .hint.show{display:block}
+  .hint p{margin:0 0 8px;color:var(--soft);font-size:.93rem}
+  svg{display:block;width:100%;height:auto}
+  .gridsign{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .gridsign div{border-radius:10px;padding:8px;text-align:center;font-family:Cambria,Georgia,serif;font-weight:700}
+  .gp{background:var(--mintw);color:var(--mint)} .gn{background:var(--coralw);color:var(--coral)}
+
+  .done{margin-top:40px;padding:26px;border-radius:20px;background:#fff;border:1.5px solid var(--hair);text-align:center;display:none}
+  .done.show{display:block}
+  .done h3{margin:0 0 8px;font-size:1.5rem}
+  .done p{margin:0;color:var(--soft)}
+  footer{max-width:1120px;margin:0 auto;padding:0 20px 40px;color:var(--soft);font-size:.85rem}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+  @media print{.bar{position:static} .hint{display:block}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="rule"><i style="background:var(--sky)"></i><i style="background:var(--lilac)"></i><i style="background:var(--mint)"></i><i style="background:var(--amber)"></i><i style="background:var(--coral)"></i></div>
+  <h1>1.2 <mark>Negative Numbers</mark> · practice</h1>
+  <p class="sub">Cambridge IGCSE · Grade 8 · Inspire International Academy. Twenty-four questions taken from Exercises 1.2 A, B and C. Type your answer and press Enter. Stuck? Press <b>Show me</b> — it draws the number line for you.</p>
+</header>
+
+<div class="bar"><div class="inner">
+  <span class="score"><b id="right">0</b> / <span id="total">24</span> right</span>
+  <span class="streak" id="streak"></span>
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <button id="reset">Start again</button>
+  <button class="ghost" id="revealAll">Teacher: show all answers</button>
+</div></div>
+
+<main id="main"></main>
+
+<div class="done" id="done">
+  <h3 id="doneTitle">Every one finished.</h3>
+  <p id="doneText"></p>
+</div>
+
+<footer>Answers are checked in your browser. Nothing is sent anywhere and nothing is saved — close the page and it resets.</footer>
+
+<script>
+/* ── the questions. Every answer re-derived in Python before it was written here. ── */
+const Q = [
+  // ±  family — start value then the moves, so the hint can draw it
+  {s:'A', src:'1.2 B  Q1',  expr:'−3 + −9',        a:-12,  start:-3,  mv:[-9]},
+  {s:'A', src:'1.2 B  Q6',  expr:'−7 + +4',        a:-3,   start:-7,  mv:[4]},
+  {s:'A', src:'1.2 B  Q15', expr:'+7 − +5',        a:2,    start:7,   mv:[-5]},
+  {s:'A', src:'1.2 B  Q18', expr:'−19 − −7',       a:-12,  start:-19, mv:[7]},
+  {s:'A', src:'1.2 B  Q24', expr:'+6 − −2',        a:8,    start:6,   mv:[2]},
+  {s:'A', src:'1.2 B  Q26', expr:'−4 − +6',        a:-10,  start:-4,  mv:[-6]},
+  {s:'A', src:'1.2 B  Q27', expr:'+7 − −4',        a:11,   start:7,   mv:[4]},
+  {s:'A', src:'1.2 B  Q22', expr:'+5.2 − −7.2',    a:12.4, start:5.2, mv:[7.2]},
+  {s:'A', src:'1.2 B  Q30', expr:'−3 − +2 + −5',   a:-10,  start:-3,  mv:[-2,-5]},
+  {s:'A', src:'1.2 B  Q35', expr:'−75 − −25',      a:-50,  start:-75, mv:[25]},
+  {s:'A', src:'1.2 B  Q44', expr:'−7 − −3 − −8',   a:4,    start:-7,  mv:[3,8]},
+  {s:'A', src:'1.2 B  Q46', expr:'−1 − −5 + −8',   a:-4,   start:-1,  mv:[5,-8]},
+  // × ÷ family
+  {s:'B', src:'1.2 C  Q1',  expr:'+2 × (−4)',            a:-8},
+  {s:'B', src:'1.2 C  Q4',  expr:'−6 × (−4)',            a:24},
+  {s:'B', src:'1.2 C  Q6',  expr:'+5 × (−7)',            a:-35},
+  {s:'B', src:'1.2 C  Q8',  expr:'−4 × (+3)',            a:-12},
+  {s:'B', src:'1.2 C  Q11', expr:'−8 ÷ (+2)',            a:-4},
+  {s:'B', src:'1.2 C  Q13', expr:'+36 ÷ (−9)',           a:-4},
+  {s:'B', src:'1.2 C  Q14', expr:'−40 ÷ (−5)',           a:8},
+  {s:'B', src:'1.2 C  Q21', expr:'−11 × (−11)',          a:121},
+  {s:'B', src:'1.2 C  Q25', expr:'−600 ÷ (+30)',         a:-20},
+  {s:'B', src:'1.2 C  Q31', expr:'−3 × (−2) × (−1)',     a:-6},
+  {s:'B', src:'1.2 C  Q36', expr:'−7 × (−5) × (−1)',     a:-35},
+  {s:'B', src:'1.2 C  Q38', expr:'−7 ÷ (−14)',           a:0.5,  frac:'1/2'},
+];
+
+const SECTIONS = {
+  A:{tag:'Exercise 1.2 A · B', colour:'var(--sky)', title:'Adding and subtracting',
+     hint:'The first number is where you start. The second says which way, and how far.'},
+  B:{tag:'Exercise 1.2 C', colour:'var(--mint)', title:'Multiplying and dividing',
+     hint:'Same signs give +. Different signs give −. Division follows the same grid.'},
+};
+
+const state = Q.map(()=>({done:false, tries:0}));
+let streak = 0, best = 0;
+
+/* answer matching — tolerant about the minus sign, spaces, +, and a fraction form */
+function matches(raw, q){
+  let t = raw.trim().replace(/[−–—]/g,'-').replace(/\s+/g,'').replace(/^\+/,'');
+  if(!t) return false;
+  const m = t.match(/^-?\d+\/\d+$/);
+  if(m){ const [n,d]=t.split('/').map(Number); return d!==0 && Math.abs(n/d - q.a) < 1e-9; }
+  const v = Number(t);
+  return Number.isFinite(v) && Math.abs(v - q.a) < 1e-9;
+}
+
+const fmt = n => String(n).replace('-','−');
+
+/* ── number-line hint for the ± questions ── */
+function numberLine(q){
+  const pts=[q.start]; let cur=q.start;
+  q.mv.forEach(m=>{cur+=m; pts.push(Math.round(cur*1e6)/1e6);});
+  const lo=Math.min(...pts), hi=Math.max(...pts);
+  const pad=Math.max(1,(hi-lo)*0.22);
+  const a=lo-pad, b=hi+pad, W=380, Hh=124, y=76;
+  const X = v => 26 + (v-a)*(W-52)/(b-a||1);
+  let s=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="number line from ${fmt(q.start)} to ${fmt(pts[pts.length-1])}">`;
+  s+=`<line x1="12" y1="${y}" x2="${W-12}" y2="${y}" stroke="#1B2A41" stroke-width="2.2"/>`;
+  const ticks=[...new Set([...pts, 0])].sort((p,r)=>p-r);
+  ticks.forEach(v=>{
+    if(v<a||v>b) return;
+    const big = v===0;
+    s+=`<line x1="${X(v)}" y1="${y-6}" x2="${X(v)}" y2="${y+6}" stroke="${big?'#1B2A41':'#5A6B84'}" stroke-width="${big?2.2:1.6}"/>`;
+    s+=`<text x="${X(v)}" y="${y+24}" text-anchor="middle" font-size="15" fill="${big?'#1B2A41':'#5A6B84'}" font-family="Cambria,Georgia,serif">${fmt(v)}</text>`;
+  });
+  let from=q.start;
+  q.mv.forEach((m,i)=>{
+    const to=from+m, up=(i%2===0)?-1:1, yy=y+up*26;
+    const col = m<0 ? '#E8515F' : '#2E9BD6';
+    s+=`<path d="M ${X(from)} ${y} L ${X(from)} ${yy} L ${X(to)} ${yy} L ${X(to)} ${y}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round"/>`;
+    s+=`<circle cx="${X(from)}" cy="${y}" r="4.5" fill="${col}"/>`;
+    s+=`<text x="${(X(from)+X(to))/2}" y="${yy + (up<0?-7:18)}" text-anchor="middle" font-size="16" font-weight="700" fill="${col}" font-family="Cambria,Georgia,serif">${m<0?'−':'+'}${Math.abs(m)}</text>`;
+    from=to;
+  });
+  s+=`<circle cx="${X(from)}" cy="${y}" r="6" fill="#15803D"/>`;
+  s+='</svg>';
+  return `<p>Start where the first number is. Each arrow is one move — <b style="color:#2E9BD6">right</b> for positive, <b style="color:#E8515F">left</b> for negative.</p>${s}`;
+}
+
+function signHint(){
+  return `<p>These rules are for × and ÷ only. Work out the sign first, then the size.</p>
+  <div class="gridsign">
+    <div class="gp">+ × + = +</div><div class="gn">+ × − = −</div>
+    <div class="gn">− × + = −</div><div class="gp">− × − = +</div>
+  </div>`;
+}
+
+/* ── build the page ── */
+const main = document.getElementById('main');
+let html = '';
+['A','B'].forEach(key=>{
+  const S = SECTIONS[key];
+  html += `<div class="sec"><span class="tag" style="background:${S.colour}">${S.tag}</span>
+           <div><h2>${S.title}</h2><p>${S.hint}</p></div></div><div class="grid">`;
+  Q.forEach((q,i)=>{
+    if(q.s!==key) return;
+    html += `<div class="q" id="q${i}">
+      <span class="n" style="background:${S.colour}">${i+1}</span>
+      <div class="expr">${q.expr}</div>
+      <div class="row">
+        <input type="text" inputmode="text" autocomplete="off" spellcheck="false"
+               aria-label="answer to ${q.expr}" data-i="${i}" placeholder="your answer">
+        <button data-check="${i}">Check</button>
+        <button class="ghost" data-hint="${i}">Show me</button>
+      </div>
+      <p class="fb" id="fb${i}" aria-live="polite"></p>
+      <div class="hint" id="h${i}">${q.mv ? numberLine(q) : signHint()}</div>
+      <p style="margin:8px 0 0;color:var(--soft);font-size:.8rem">${q.src}</p>
+    </div>`;
+  });
+  html += '</div>';
+});
+main.innerHTML = html;
+document.getElementById('total').textContent = Q.length;
+
+function paint(){
+  const n = state.filter(s=>s.done).length;
+  document.getElementById('right').textContent = n;
+  document.getElementById('fill').style.width = (n/Q.length*100)+'%';
+  document.getElementById('streak').textContent = streak>=3 ? streak+' in a row' : '';
+  const done = document.getElementById('done');
+  if(n===Q.length){
+    done.classList.add('show');
+    const firstTime = state.filter(s=>s.tries<=1).length;
+    document.getElementById('doneText').textContent =
+      firstTime+' of the '+Q.length+' were right first time. Longest run without a mistake: '+best+'.';
+  } else done.classList.remove('show');
+}
+
+function check(i){
+  const box = document.getElementById('q'+i);
+  const inp = box.querySelector('input');
+  const fb  = document.getElementById('fb'+i);
+  if(state[i].done) return;
+  state[i].tries++;
+  if(matches(inp.value, Q[i])){
+    state[i].done = true;
+    box.classList.remove('no'); box.classList.add('ok');
+    fb.className = 'fb ok';
+    fb.textContent = state[i].tries===1 ? 'Right, first time.' : 'Right — and you got there yourself.';
+    inp.readOnly = true;
+    streak++; best = Math.max(best, streak);
+  } else {
+    box.classList.add('no');
+    fb.className = 'fb no';
+    fb.textContent = state[i].tries===1
+      ? 'Not yet. Check the sign before you check the number.'
+      : 'Still not it — press Show me, then try once more.';
+    if(state[i].tries>=2) document.getElementById('h'+i).classList.add('show');
+    streak = 0;
+  }
+  paint();
+}
+
+main.addEventListener('click', e=>{
+  const c = e.target.closest('[data-check]'); if(c){ check(+c.dataset.check); return; }
+  const h = e.target.closest('[data-hint]');
+  if(h){ document.getElementById('h'+h.dataset.hint).classList.toggle('show'); }
+});
+main.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && e.target.matches('input[type=text]')){ e.preventDefault(); check(+e.target.dataset.i); }
+});
+
+document.getElementById('reset').addEventListener('click', ()=>{
+  state.forEach(s=>{s.done=false;s.tries=0;}); streak=0; best=0;
+  document.querySelectorAll('.q').forEach(b=>{
+    b.classList.remove('ok','no');
+    const i=b.querySelector('input'); i.value=''; i.readOnly=false;
+    b.querySelector('.fb').textContent='';
+    b.querySelector('.hint').classList.remove('show');
+  });
+  paint(); window.scrollTo({top:0,behavior:'smooth'});
+});
+
+document.getElementById('revealAll').addEventListener('click', ()=>{
+  Q.forEach((q,i)=>{
+    const b=document.getElementById('q'+i), inp=b.querySelector('input');
+    inp.value = q.frac ? q.frac + '  (' + fmt(q.a) + ')' : fmt(q.a);
+    inp.readOnly = true; b.classList.remove('no'); b.classList.add('ok');
+    document.getElementById('fb'+i).textContent='';
+  });
+  document.getElementById('revealAll').textContent = 'Answers shown — press Start again to clear';
+});
+
+paint();
+</script>
+</body>
+</html>
